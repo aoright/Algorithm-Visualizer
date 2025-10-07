@@ -103,7 +103,7 @@ MIT © Algorithm-Visualizer Contributors
 ---
 
 ## 联系我
-- issues：[GitHub Issues](https://github.com/your-username/algorithm-visualizer/issues)
+- issues：[GitHub Issues](https://github.com/aoright/algorithm-visualizer/issues)
 - 邮件：aorightyan@gmail.com 
 
 ---
