@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排序算法可视化 - 算法可视化工具</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Core Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff6b35;
+            --accent-green: #4ecdc4;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .array-bar {
+            transition: all 0.3s ease;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .array-bar.comparing {
+            background: var(--accent-orange) !important;
+            transform: scale(1.1);
+        }
+        
+        .array-bar.swapping {
+            background: var(--accent-green) !important;
+            transform: scale(1.2);
+        }
+        
+        .array-bar.sorted {
+            background: var(--accent-cyan) !important;
+        }
+        
+        .control-button {
+            transition: all 0.3s ease;
+        }
+        
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #374151;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        .performance-card {
+            background: rgba(22, 33, 62, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .algorithm-select {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .algorithm-select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-cyan-400 to-green-400 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">AV</span>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">算法可视化</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-300 hover:text-white">首页</a>
+                    <a href="sorting.html" class="nav-link text-cyan-400 font-semibold">排序算法</a>
+                    <a href="search.html" class="nav-link text-gray-300 hover:text-white">搜索算法</a>
+                    <a href="graph.html" class="nav-link text-gray-300 hover:text-white">图论算法</a>
+                    <a href="dp.html" class="nav-link text-gray-300 hover:text-white">动态规划</a>
+                    <a href="string.html" class="nav-link text-gray-300 hover:text-white">字符串算法</a>
+                    <a href="greedy.html" class="nav-link text-gray-300 hover:text-white">贪心算法</a>
+                </div>
+                
+                <button class="md:hidden text-gray-300 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-16 min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-black gradient-text mb-4">排序算法可视化</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    通过交互式动画深入理解各种排序算法的工作原理和性能特征
+                </p>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-gray-700">
+                <div class="grid md:grid-cols-4 gap-6">
+                    <!-- Algorithm Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">选择算法</label>
+                        <select id="algorithmSelect" class="algorithm-select w-full px-4 py-2 rounded-lg focus:outline-none">
+                            <option value="bubble">冒泡排序</option>
+                            <option value="selection">选择排序</option>
+                            <option value="insertion">插入排序</option>
+                            <option value="merge">归并排序</option>
+                            <option value="quick">快速排序</option>
+                            <option value="heap">堆排序</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Array Size -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">数组大小: <span id="arraySizeValue">50</span></label>
+                        <input type="range" id="arraySize" min="10" max="100" value="50" class="slider w-full">
+                    </div>
+                    
+                    <!-- Speed -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">动画速度: <span id="speedValue">5</span></label>
+                        <input type="range" id="speed" min="1" max="10" value="5" class="slider w-full">
+                    </div>
+                    
+                    <!-- Control Buttons -->
+                    <div class="flex items-end space-x-2">
+                        <button id="generateArray" class="control-button px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium">
+                            生成数组
+                        </button>
+                        <button id="startSort" class="control-button px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium">
+                            开始排序
+                        </button>
+                        <button id="stopSort" class="control-button px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium">
+                            停止
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization Area -->
+            <div class="grid lg:grid-cols-4 gap-8">
+                <!-- Main Visualization -->
+                <div class="lg:col-span-3">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold">算法可视化</h3>
+                            <div class="flex items-center space-x-4 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 bg-orange-500 rounded"></div>
+                                    <span>比较中</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 bg-green-500 rounded"></div>
+                                    <span>交换中</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 bg-cyan-500 rounded"></div>
+                                    <span>已排序</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Array Visualization -->
+                        <div id="arrayContainer" class="h-96 bg-gray-900/50 rounded-lg p-4 flex items-end justify-center space-x-1 overflow-hidden">
+                            <!-- Array bars will be generated here -->
+                        </div>
+                        
+                        <!-- Algorithm Description -->
+                        <div class="mt-6 p-4 bg-gray-900/50 rounded-lg">
+                            <h4 class="font-semibold mb-2">算法说明</h4>
+                            <p id="algorithmDescription" class="text-gray-300 text-sm leading-relaxed">
+                                选择一种算法开始查看详细说明
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Panel -->
+                <div class="space-y-6">
+                    <!-- Statistics -->
+                    <div class="performance-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold mb-4">性能统计</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">比较次数</span>
+                                <span id="comparisons" class="text-cyan-400 font-bold">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">交换次数</span>
+                                <span id="swaps" class="text-orange-400 font-bold">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">执行时间</span>
+                                <span id="executionTime" class="text-green-400 font-bold">0ms</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">数组大小</span>
+                                <span id="currentArraySize" class="text-purple-400 font-bold">50</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Complexity -->
+                    <div class="performance-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold mb-4">时间复杂度</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">最佳情况</span>
+                                <span id="bestCase" class="code-font text-green-400">O(n)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">平均情况</span>
+                                <span id="averageCase" class="code-font text-yellow-400">O(n²)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">最坏情况</span>
+                                <span id="worstCase" class="code-font text-red-400">O(n²)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Space Complexity -->
+                    <div class="performance-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold mb-4">空间复杂度</h3>
+                        <div class="text-center">
+                            <span id="spaceComplexity" class="code-font text-2xl text-cyan-400">O(1)</span>
+                            <p class="text-gray-400 text-sm mt-2">辅助空间</p>
+                        </div>
+                    </div>
+
+                    <!-- Stability -->
+                    <div class="performance-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold mb-4">稳定性</h3>
+                        <div class="text-center">
+                            <span id="stability" class="text-2xl text-green-400">稳定</span>
+                            <p class="text-gray-400 text-sm mt-2">相等元素保持相对顺序</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Algorithm Code -->
+            <div class="mt-8 bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+                <h3 class="text-xl font-bold mb-4">算法代码</h3>
+                <div class="bg-gray-900/50 rounded-lg p-4 overflow-x-auto">
+                    <pre id="algorithmCode" class="code-font text-sm text-gray-300"><code>// 选择算法查看代码实现
+</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400">
+                    © 2025 Kaleb. 让算法学习变得简单有趣.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="sorting-algorithms.js"></script>
+    <script>
+        // Initialize sorting page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSortingPage();
+        });
+    </script>
+</body>
+</html>
