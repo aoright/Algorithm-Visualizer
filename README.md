@@ -8,7 +8,7 @@
 ## 项目简介
 Algorithm-Visualizer 是一款轻量级、可交互的**算法可视化学习平台**。  
 无需安装，打开浏览器即可直观理解排序、搜索、图论等经典算法的执行过程。  
-教学、面试、自学都好用 👉 [立即体验](https://your-username.github.io/algorithm-visualizer)
+教学、面试、自学都好用  [立即体验](https://aoright.github.io/algorithm-visualizer)
 
 ![preview](resources/demo-images/home-demo.gif)
 
@@ -17,16 +17,16 @@ Algorithm-Visualizer 是一款轻量级、可交互的**算法可视化学习平
 ## ✨ 核心特色
 | 功能 | 描述 |
 |---|---|
-| 🎨 实时动画 | 基于 Anime.js 的丝滑动画，每一步操作一目了然 |
-| 🕹️ 交互式控制台 | 速度/数据量/随机种子均可调，支持单步回放 |
-| 📊 性能面板 | 实时展示时间、比较/交换次数、复杂度曲线 |
-| 📜 同步代码高亮 | 当前执行行与可视化完全同步，支持多语言切换 |
-| 📱 全端适配 | 桌面、平板、手机自适应，支持触摸手势 |
-| 🌓 深色模式 | 自动读取系统主题，也可手动切换 |
+| 实时动画 | 基于 Anime.js 的丝滑动画，每一步操作一目了然 |
+| 交互式控制台 | 速度/数据量/随机种子均可调，支持单步回放 |
+| 性能面板 | 实时展示时间、比较/交换次数、复杂度曲线 |
+| 同步代码高亮 | 当前执行行与可视化完全同步，支持多语言切换 |
+| 全端适配 | 桌面、平板、手机自适应，支持触摸手势 |
+| 深色模式 | 自动读取系统主题，也可手动切换 |
 
 ---
 
-## 🚀 快速开始
+## 快速开始
 1. **克隆仓库**
    ```bash
    git clone https://github.com/your-username/algorithm-visualizer.git
@@ -49,7 +49,7 @@ Algorithm-Visualizer 是一款轻量级、可交互的**算法可视化学习平
 
 ---
 
-## 📂 文件结构
+## 文件结构
 ```
 algorithm-visualizer
 ├─ index.html               # 主页
@@ -67,7 +67,7 @@ algorithm-visualizer
 
 ---
 
-## 🎓 教学用法
+## 教学用法
 | 场景 | 建议 |
 |---|---|
 | 课堂演示 | 投影后放慢速度，单步讲解，配合代码高亮 |
@@ -77,7 +77,7 @@ algorithm-visualizer
 
 ---
 
-## 🛠️ 技术栈
+## 技术栈
 - **可视化**：Anime.js + SVG + Canvas  
 - **图表**：ECharts（复杂度曲线）  
 - **布局**：Flex + Grid，PostCSS 自动补全  
@@ -86,7 +86,7 @@ algorithm-visualizer
 
 ---
 
-## 🤝 贡献指南
+## 贡献指南
 我们欢迎一切形式的贡献！  
 **流程**：
 1. Fork 仓库
@@ -97,12 +97,12 @@ algorithm-visualizer
 
 ---
 
-## 📄 开源协议
+## 开源协议
 MIT © Algorithm-Visualizer Contributors
 
 ---
 
-## 📬 联系我
+## 联系我
 - issues：[GitHub Issues](https://github.com/your-username/algorithm-visualizer/issues)
 - 邮件：aorightyan@gmail.com 
 
