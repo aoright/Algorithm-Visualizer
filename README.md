@@ -8,7 +8,9 @@
 ## 项目简介
 Algorithm-Visualizer 是一款轻量级、可交互的**算法可视化学习平台**。  
 无需安装，打开浏览器即可直观理解排序、搜索、图论等经典算法的执行过程。  
-教学、面试、自学都好用  [立即体验](https://aoright.github.io/algorithm-visualizer)
+教学、面试、自学都好用  [立即体验](https://aoright.github.io/Algorithm-Visualizer/)
+
+
 
 ![preview](resources/demo-images/home-demo.gif)
 
