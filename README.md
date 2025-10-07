@@ -31,7 +31,7 @@ Algorithm-Visualizer 是一款轻量级、可交互的**算法可视化学习平
 ## 快速开始
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/your-username/algorithm-visualizer.git
+   git clone https://github.com/aoright/algorithm-visualizer.git
    cd algorithm-visualizer
    ```
 
